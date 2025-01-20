@@ -24,24 +24,12 @@ public class BaseInitData {
     public ApplicationRunner applicationRunner() {
 
         return args -> {
-            if (postService.count()>0) {
+            if (postService.count() > 0) {
                 return;
             }
-
-            System.out.println("========== 1번 데이터 생성 ==========");
             postService.write("title1", "content1");
-            System.out.println("========== 1번 데이터 생성완료 ==========");
-
-            System.out.println("========== 2번 데이터 생성 ==========");
             postService.write("title2", "content2");
-            System.out.println("========== 2번 데이터 생성완료 ==========");
-
-            System.out.println("========== 3번 데이터 생성 ==========");
             postService.write("title3", "content3");
-            System.out.println("========== 3번 데이터 생성완료 ==========");
-
-
-
         };
     }
 
@@ -52,9 +40,9 @@ public class BaseInitData {
             @Override
             @Transactional
             public void run(ApplicationArguments args) throws Exception {
-                Post post=postService.findById(1L).get();
+                Post post = postService.findById(1L).get();
                 Thread.sleep(1000);
-                postService.modify(post,"new title","new content");
+                postService.modify(post, "new title", "new content");
             }
         };
     }
@@ -68,11 +56,20 @@ public class BaseInitData {
 
                 Post post = postService.findById(1L).get();
 
+                if (commentService.count() > 0) {
+                    return;
+                }
+
                 Comment c1 = commentService.write(post.getId(), "comment 1");
                 Comment c2 = commentService.write(post.getId(), "comment 2");
                 Comment c3 = commentService.write(post.getId(), "comment 3");
 
+                // 1번 댓글에 대한 댓글 정보
+                System.out.println(c1.getId() + "번 댓글의 부모 게시글 번호는 " + c1.getPostId() + "번 입니다");
 
+                // 1번 댓글의 부모 게시물 제목 정보
+                Post findPost = postService.findById(c1.getPostId()).get();
+                System.out.println(c1.getId() + "번 댓글의 부모 게시물 제목은 " + findPost.getTitle());
 
             }
         };
