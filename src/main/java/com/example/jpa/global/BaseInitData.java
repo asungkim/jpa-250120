@@ -37,6 +37,7 @@ public class BaseInitData {
         return args -> {
             Post post=postService.findById(1L).get();
             postService.modify(post,"new title","new content");
+//            postService.modify2(1L,"new title","new content");
         };
     }
 }
