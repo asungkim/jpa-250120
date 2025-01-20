@@ -34,7 +34,7 @@ public class PostService {
         return post;
     }
 
-    @Transactional
+    @Transactional //
     public void modify2(long id, String newTitle, String newBody) {
         Post post = postRepository.findById(id).get();
         post.setTitle(newTitle);
