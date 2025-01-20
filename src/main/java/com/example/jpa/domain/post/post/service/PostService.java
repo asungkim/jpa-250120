@@ -5,6 +5,8 @@ import com.example.jpa.domain.post.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class PostService {
@@ -14,7 +16,7 @@ public class PostService {
     public Post write(String title, String body) {
 
         // 1. Post 조립
-        Post post= Post.builder()
+        Post post = Post.builder()
                 .title(title)
                 .body(body)
                 .build();
@@ -23,7 +25,18 @@ public class PostService {
         return postRepository.save(post);
     }
 
+    public Post modify(Post post, String newTitle, String newBody) {
+        post.setTitle(newTitle);
+        post.setBody(newBody);
+
+        return postRepository.save(post);
+    }
+
     public long count() {
         return postRepository.count();
+    }
+
+    public Optional<Post> findById(long id) {
+        return postRepository.findById(id);
     }
 }
