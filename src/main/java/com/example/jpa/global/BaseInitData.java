@@ -87,4 +87,23 @@ public class BaseInitData {
             }
         };
     }
+
+    @Bean
+    @Order(4)
+    public ApplicationRunner applicationRunner4() {
+        return new ApplicationRunner() {
+            @Override
+            public void run(ApplicationArguments args) throws Exception {
+                Post post=postService.findById(3L).get();
+
+                System.out.println(post.getId()+"번 포스트를 가져왔습니다.");
+
+                System.out.println("=============================.");
+
+                Post post2=postService.findById(3L).get();
+                System.out.println(post2.getId()+"번 포스트를 가져왔습니다.");
+
+            }
+        };
+    }
 }
