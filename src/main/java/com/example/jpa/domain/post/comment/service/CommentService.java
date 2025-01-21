@@ -6,6 +6,8 @@ import com.example.jpa.domain.post.post.entity.Post;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class CommentService {
@@ -22,5 +24,9 @@ public class CommentService {
 
     public long count() {
         return commentRepository.count();
+    }
+
+    public Optional<Comment> findById(long id) {
+        return commentRepository.findById(id);
     }
 }
