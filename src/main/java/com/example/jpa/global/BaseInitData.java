@@ -6,7 +6,6 @@ import com.example.jpa.domain.post.post.entity.Post;
 import com.example.jpa.domain.post.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,49 +20,32 @@ public class BaseInitData {
     private final PostService postService;
     private final CommentService commentService;
 
-    // 프록시 객체를 획득
     @Autowired
     @Lazy
-    private BaseInitData self; // 프록시
+    private BaseInitData self;
 
     @Bean
     @Order(1)
     public ApplicationRunner applicationRunner() {
-
         return args -> {
-            if (postService.count() > 0) {
-                return;
-            }
-            Post p1 = postService.write("title1", "content1");
-            postService.write("title2", "content2");
-            postService.write("title3", "content3");
-
-            commentService.write(p1, "comment1");
-            commentService.write(p1, "comment2");
-            commentService.write(p1, "comment3");
-
-        };
-    }
-
-    @Bean
-    @Order(2)
-    public ApplicationRunner applicationRunner2() {
-        return new ApplicationRunner() {
-            @Override
-            public void run(ApplicationArguments args) throws Exception {
-                self.work();
-            }
+            work1();
         };
     }
 
     @Transactional
-    public void work() {
-        Comment c1 = commentService.findById(1L).get();
-        // select * from comment where id=1;
+    public void work1() {
+        if (postService.count() > 0) {
+            return;
+        }
+        Post p1 = postService.write("title1", "content1");
+        Comment c1 = Comment.builder().body("comment1").build();
 
-        Post post = c1.getPost();
-        // LAZY 일떄
-        System.out.println(post.getId()); // post 가 null 은 아니고 id하나만 채워져 있다
-        System.out.println(post.getTitle());
+        p1.addComment(c1); // 관계의 주인이 DB 반영을 한다
+
+        commentService.write(p1,"comment1");
+
+
+
+
     }
 }
