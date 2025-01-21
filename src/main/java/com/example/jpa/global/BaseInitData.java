@@ -52,6 +52,7 @@ public class BaseInitData {
     public ApplicationRunner applicationRunner3() {
         return new ApplicationRunner() {
             @Override
+            @Transactional
             public void run(ApplicationArguments args) throws Exception {
 
                 Post post = postService.findById(1L).get();
@@ -60,16 +61,12 @@ public class BaseInitData {
                     return;
                 }
 
-                Comment c1 = commentService.write(post.getId(), "comment 1");
-                Comment c2 = commentService.write(post.getId(), "comment 2");
-                Comment c3 = commentService.write(post.getId(), "comment 3");
+                Comment c5 = Comment.builder()
+                        .body("comment5")
+                        .build();
 
-                // 1번 댓글에 대한 댓글 정보
-                System.out.println(c1.getId() + "번 댓글의 부모 게시글 번호는 " + c1.getPostId() + "번 입니다");
+                post.addComment(c5);
 
-                // 1번 댓글의 부모 게시물 제목 정보
-                Post findPost = postService.findById(c1.getPostId()).get();
-                System.out.println(c1.getId() + "번 댓글의 부모 게시물 제목은 " + findPost.getTitle());
 
             }
         };

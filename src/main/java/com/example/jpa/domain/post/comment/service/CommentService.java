@@ -2,6 +2,7 @@ package com.example.jpa.domain.post.comment.service;
 
 import com.example.jpa.domain.post.comment.entity.Comment;
 import com.example.jpa.domain.post.comment.repository.CommentRepository;
+import com.example.jpa.domain.post.post.entity.Post;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,9 +11,9 @@ import org.springframework.stereotype.Service;
 public class CommentService {
     private final CommentRepository commentRepository;
 
-    public Comment write(long postId,String body) {
+    public Comment write(Post post, String body) {
         Comment comment = Comment.builder()
-                .postId(postId)
+                .post(post)
                 .body(body)
                 .build();
 

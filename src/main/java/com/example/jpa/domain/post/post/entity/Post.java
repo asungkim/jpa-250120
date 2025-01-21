@@ -1,5 +1,6 @@
 package com.example.jpa.domain.post.post.entity;
 
+import com.example.jpa.domain.post.comment.entity.Comment;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -7,6 +8,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -40,4 +43,13 @@ public class Post {
     private String body;
 
 
+    // mapped -> comments 안에 comment 는 post가 관리할거야
+    // cascade -> post가 사라지면 comment 어떻게 할거야?
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @Builder.Default
+    private List<Comment> comments = new ArrayList<>();
+
+    public void addComment(Comment comment) {
+        this.comments.add(comment);
+    }
 }
