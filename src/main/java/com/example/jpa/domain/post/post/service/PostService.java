@@ -65,4 +65,8 @@ public class PostService {
     public List<Post> findByTitle(String title) {
         return postRepository.findByTitle(title);
     }
+
+    public List<Post> findByTitleAndBody(String title, String content) {
+        return postRepository.findByTitleAndBody(title,content);
+    }
 }

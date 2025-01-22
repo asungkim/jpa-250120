@@ -64,4 +64,12 @@ public class PostServiceTest {
         assertThat(posts.size()).isEqualTo(1);
     }
 
+    @Test
+    @DisplayName("제목과 내용으로 조회")
+    public void t5() {
+        List<Post> posts=postService.findByTitleAndBody("title1","content1");
+
+        assertThat(posts.size()).isEqualTo(1);
+    }
+
 }
