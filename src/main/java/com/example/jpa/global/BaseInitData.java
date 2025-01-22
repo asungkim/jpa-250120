@@ -44,6 +44,8 @@ public class BaseInitData {
             return;
         }
         Post p1 = postService.write("title1", "content1");
+        Post p2 = postService.write("title2", "content2");
+        Post p3 = postService.write("title3", "content3");
 
         Comment c1 = Comment.builder().body("comment1").build();
         p1.addComment(c1); // 관계의 주인이 DB 반영을 한다
