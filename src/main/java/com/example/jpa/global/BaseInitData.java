@@ -42,11 +42,11 @@ public class BaseInitData {
             return;
         }
         // 회원 생성
-        memberService.join("system","1234","시스템");
-        memberService.join("admin","1234","관리자");
-        memberService.join("user1","1234","유저1");
-        memberService.join("user2","1234","유저2");
-        memberService.join("user3","1234","유저3");
+        memberService.join("system", "1234", "시스템");
+        memberService.join("admin", "1234", "관리자");
+        memberService.join("user1", "1234", "유저1");
+        memberService.join("user2", "1234", "유저2");
+        memberService.join("user3", "1234", "유저3");
     }
 
     @Transactional
@@ -55,21 +55,30 @@ public class BaseInitData {
             return;
         }
 
-        Member user1=memberService.findByUsername("user1").get();
-        Member user2=memberService.findByUsername("user2").get();
+        Member user1 = memberService.findByUsername("user1").get();
+        Member user2 = memberService.findByUsername("user2").get();
 
-        Post p1 = postService.write(user1,"title1", "content1");
-        Post p2 = postService.write(user2,"title2", "content2");
-        Post p3 = postService.write(user2,"title3", "content3");
+        Post p1 = postService.write(user1, "title1", "content1");
+        Post p2 = postService.write(user2, "title2", "content2");
+        Post p3 = postService.write(user2, "title3", "content3");
 
 
-        Comment c1 = Comment.builder().body("comment1").build();
+        Comment c1 = Comment.builder()
+                .author(user1)
+                .body("comment1")
+                .build();
         p1.addComment(c1); // 관계의 주인이 DB 반영을 한다
 
-        Comment c2 = Comment.builder().body("comment2").build();
+        Comment c2 = Comment.builder()
+                .author(user1)
+                .body("comment2")
+                .build();
         p1.addComment(c2);
 
-        Comment c3 = Comment.builder().body("comment3").build();
+        Comment c3 = Comment.builder()
+                .author(user1)
+                .body("comment3")
+                .build();
         p1.addComment(c3);
 
 //        p1.removeComment(c1);
