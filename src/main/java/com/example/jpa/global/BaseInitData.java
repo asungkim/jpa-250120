@@ -13,8 +13,6 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.core.annotation.Order;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Configuration
 @RequiredArgsConstructor
 public class BaseInitData {
@@ -37,19 +35,7 @@ public class BaseInitData {
 
     @Transactional
     public void work2() {
-        Post post = postService.findById(1L).get();
-        System.out.println("1번 포스트 가져옴");
 
-        List<Comment> comments = post.getComments(); // 프록시
-        System.out.println("1번 포스트 댓글 가져옴");
-
-        String body = comments.get(0).getBody();
-        System.out.println("1번 포스트 첫번쨰 댓글 가져옴");
-        // select * from comment where id = 1 X
-        // 한번에 모든 댓글 정보 가져옴.
-        // select * from comment where post_id = 1; O
-        comments.get(1); // 2번째 댓글 가져옴. DB 조회 안함.
-        // select * from comment where id = 2 X
     }
 
     @Transactional
@@ -68,7 +54,7 @@ public class BaseInitData {
         Comment c3 = Comment.builder().body("comment3").build();
         p1.addComment(c3);
 
-        p1.removeComment(c1);
+//        p1.removeComment(c1);
 
     }
 }

@@ -5,6 +5,11 @@ spring:
   output:
     ansi:
       enabled: always
+
+  profiles:
+    active: test
+
+
   datasource:
     url: jdbc:h2:./db_dev;MODE=MYSQL
     username: sa

@@ -58,4 +58,14 @@ public class Post {
     public void removeComment(Comment comment) {
         this.comments.remove(comment);
     }
+
+    public void removeAllComments(){
+        comments.stream()
+                .forEach(com->{
+                    comments.remove(com);
+                    com.setPost(null);
+                });
+
+        comments.clear();
+    }
 }
