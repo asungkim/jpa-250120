@@ -180,4 +180,6 @@ public class PostServiceTest {
         assertEquals(3, postPage.getNumberOfElements()); // 현재 페이지에 노출된 글 수
         assertEquals(pageNumber, postPage.getNumber()); // 현재 페이지 번호
     }
+
+
 }
