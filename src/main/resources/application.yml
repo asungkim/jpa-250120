@@ -7,14 +7,14 @@ spring:
       enabled: always
 
   profiles:
-    active: test
-
+    active: dev
 
   datasource:
     url: jdbc:h2:./db_dev;MODE=MYSQL
     username: sa
     password:
     driver-class-name: org.h2.Driver
+
 
   jpa:
     hibernate:
