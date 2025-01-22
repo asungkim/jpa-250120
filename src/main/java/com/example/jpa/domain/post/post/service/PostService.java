@@ -3,6 +3,8 @@ package com.example.jpa.domain.post.post.service;
 import com.example.jpa.domain.post.post.entity.Post;
 import com.example.jpa.domain.post.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,6 +62,10 @@ public class PostService {
 
     public List<Post> findAll() {
         return postRepository.findAll();
+    }
+
+    public Page<Post> findAll(Pageable pageable) {
+        return postRepository.findAll(pageable);
     }
 
     public List<Post> findByTitle(String title) {
