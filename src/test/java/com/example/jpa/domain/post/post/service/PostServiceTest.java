@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 @SpringBootTest
@@ -32,8 +33,8 @@ public class PostServiceTest {
     @Transactional
     @Rollback(value = true)
     public void t1() {
-        postService.write("title1","body1");
-        postService.write("title2","body2");
+        postService.write("title1", "body1");
+        postService.write("title2", "body2");
 
     }
 
@@ -63,7 +64,7 @@ public class PostServiceTest {
     @Test
     @DisplayName("제목으로 조회")
     public void t4() {
-        List<Post> posts=postService.findByTitle("title1");
+        List<Post> posts = postService.findByTitle("title1");
 
         assertThat(posts.size()).isEqualTo(3);
     }
@@ -71,7 +72,7 @@ public class PostServiceTest {
     @Test
     @DisplayName("제목과 내용으로 조회")
     public void t5() {
-        List<Post> posts=postService.findByTitleAndBody("title1","content1");
+        List<Post> posts = postService.findByTitleAndBody("title1", "content1");
 
         assertThat(posts.size()).isEqualTo(3);
     }
@@ -79,7 +80,7 @@ public class PostServiceTest {
     @Test
     @DisplayName("제목이 포함된 결과 조회")
     public void t6() {
-        List<Post> posts=postService.findByTitleLike("title%");
+        List<Post> posts = postService.findByTitleLike("title%");
 
         assertThat(posts.size()).isEqualTo(5);
     }
@@ -87,7 +88,7 @@ public class PostServiceTest {
     @Test
     @DisplayName("아이디 순으로 내림차순 정렬")
     public void t7() {
-        List<Post> posts=postService.findByOrderByIdDesc();
+        List<Post> posts = postService.findByOrderByIdDesc();
         assertThat(posts.get(0).getId()).isEqualTo(5);
 
     }
@@ -96,7 +97,7 @@ public class PostServiceTest {
     @DisplayName("위에서 2개만 조회")
     public void t8() {
         // select * from post where title=? order by id desc limit 2;
-        List<Post> posts=postService.findTop2ByTitleOrderByIdDesc("title1");
+        List<Post> posts = postService.findTop2ByTitleOrderByIdDesc("title1");
 
         // title1 id -> 1 4 5
         assertThat(posts.get(0).getId()).isEqualTo(5);
@@ -109,8 +110,8 @@ public class PostServiceTest {
     public void t9() {
         // select * from post like 2,2
 
-        int itemsPerPage=2;
-        int pageNumber=2;
+        int itemsPerPage = 2;
+        int pageNumber = 2;
         pageNumber--;
         Pageable pageable = PageRequest.of(pageNumber, itemsPerPage, Sort.by(Sort.Direction.DESC, "id"));
         // id 5 4 | (3 2) | 1
@@ -121,6 +122,30 @@ public class PostServiceTest {
 
         assertThat(posts.get(0).getId()).isEqualTo(3);
         assertThat(posts.get(1).getId()).isEqualTo(2);
+    }
+
+    @Test
+    @DisplayName("findByTitleLike - part 2")
+    public void t10() {
+        // select * from post where like title% order by desc id limit 0,10;
+
+        int itemsPerPage = 10;
+        int pageNumber = 1;
+        pageNumber--;
+        Pageable pageable = PageRequest.of(pageNumber, itemsPerPage, Sort.by(Sort.Direction.DESC, "id"));
+        // id 5 4 3 2 1
+
+        Page<Post> postPage = postService.findByTitleLike("title%", pageable);
+        List<Post> posts = postPage.getContent(); //
+
+        assertEquals(5, posts.size()); // 글이 총 5개이고, 현재 페이지는 1이므로 5개만 보여야 함
+        Post post = posts.get(0);
+        assertEquals(5, post.getId());
+        assertEquals("title1", post.getTitle());
+        assertEquals(5, postPage.getTotalElements()); // 전체 글 수
+        assertEquals(1, postPage.getTotalPages()); // 전체 페이지 수
+        assertEquals(5, postPage.getNumberOfElements()); // 현재 페이지에 노출된 글 수
+        assertEquals(pageNumber, postPage.getNumber()); // 현재 페이지 번호
     }
 
 }
