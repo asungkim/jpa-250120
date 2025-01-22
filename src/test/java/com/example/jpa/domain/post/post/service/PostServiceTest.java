@@ -181,5 +181,12 @@ public class PostServiceTest {
         assertEquals(pageNumber, postPage.getNumber()); // 현재 페이지 번호
     }
 
-
+    @Test
+    @DisplayName("회원 정보로 글 조회")
+    void t13() {
+        // 회원 아이디로 회원이 작성한 글 목록 가져오기
+        // select * from post p inner join member m on p.member_id=m.id where username = 'user1';
+        List<Post> posts=postService.findByAuthorUsername("user1");
+        assertThat(posts.size()).isEqualTo(2);
+    }
 }

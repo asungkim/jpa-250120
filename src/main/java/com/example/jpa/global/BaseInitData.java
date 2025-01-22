@@ -59,7 +59,7 @@ public class BaseInitData {
         Member user2 = memberService.findByUsername("user2").get();
 
         Post p1 = postService.write(user1, "title1", "content1");
-        Post p2 = postService.write(user2, "title2", "content2");
+        Post p2 = postService.write(user1, "title2", "content2");
         Post p3 = postService.write(user2, "title3", "content3");
 
 
