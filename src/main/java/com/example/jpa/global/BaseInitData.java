@@ -13,6 +13,8 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.core.annotation.Order;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Configuration
 @RequiredArgsConstructor
 public class BaseInitData {
@@ -29,7 +31,25 @@ public class BaseInitData {
     public ApplicationRunner applicationRunner() {
         return args -> {
             self.work1();
+            self.work2();
         };
+    }
+
+    @Transactional
+    public void work2() {
+        Post post = postService.findById(1L).get();
+        System.out.println("1번 포스트 가져옴");
+
+        List<Comment> comments = post.getComments(); // 프록시
+        System.out.println("1번 포스트 댓글 가져옴");
+
+        String body = comments.get(0).getBody();
+        System.out.println("1번 포스트 첫번쨰 댓글 가져옴");
+        // select * from comment where id = 1 X
+        // 한번에 모든 댓글 정보 가져옴.
+        // select * from comment where post_id = 1; O
+        comments.get(1); // 2번째 댓글 가져옴. DB 조회 안함.
+        // select * from comment where id = 2 X
     }
 
     @Transactional
@@ -40,11 +60,15 @@ public class BaseInitData {
         Post p1 = postService.write("title1", "content1");
 
         Comment c1 = Comment.builder().body("comment1").build();
-        c1 = commentService.save(c1);
-
         p1.addComment(c1); // 관계의 주인이 DB 반영을 한다
 
+        Comment c2 = Comment.builder().body("comment2").build();
+        p1.addComment(c2);
 
+        Comment c3 = Comment.builder().body("comment3").build();
+        p1.addComment(c3);
+
+        p1.removeComment(c1);
 
     }
 }

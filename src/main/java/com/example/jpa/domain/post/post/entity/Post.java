@@ -45,12 +45,17 @@ public class Post {
 
     // mapped -> comments 안에 comment 는 post가 관리할거야
     // cascade -> post가 사라지면 comment 어떻게 할거야?
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    // orphanRemoval -> 부모를 삭제하면 자식을 삭제할꺼야?
+    @OneToMany(mappedBy = "post",cascade = CascadeType.ALL,orphanRemoval = true)
     @Builder.Default
     private List<Comment> comments = new ArrayList<>();
 
     public void addComment(Comment comment) {
         this.comments.add(comment);
         comment.setPost(this);
+    }
+
+    public void removeComment(Comment comment) {
+        this.comments.remove(comment);
     }
 }
