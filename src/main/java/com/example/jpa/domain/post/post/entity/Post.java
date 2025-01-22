@@ -1,5 +1,6 @@
 package com.example.jpa.domain.post.post.entity;
 
+import com.example.jpa.domain.member.entity.Member;
 import com.example.jpa.domain.post.comment.entity.Comment;
 import jakarta.persistence.*;
 import lombok.*;
@@ -41,6 +42,9 @@ public class Post {
 
     @Column(columnDefinition = "TEXT")
     private String body;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Member author;
 
 
     // mapped -> comments 안에 comment 는 post가 관리할거야

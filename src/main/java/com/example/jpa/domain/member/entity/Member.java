@@ -1,7 +1,5 @@
-package com.example.jpa.domain.post.comment.entity;
+package com.example.jpa.domain.member.entity;
 
-import com.example.jpa.domain.member.entity.Member;
-import com.example.jpa.domain.post.post.entity.Post;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -17,14 +15,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 @EntityListeners(AuditingEntityListener.class)
-public class Comment {
+public class Member {
+
     @Id // PR
     @GeneratedValue(strategy = GenerationType.IDENTITY) // AUTO-INCREMENT
-    @Getter
     @Setter(AccessLevel.PRIVATE)
-    private Long id; // long -> null x , LOng -> null o
+    private Long id;
 
-    // created, modified 감시하기위해 EntityListeners
     @CreatedDate
     @Setter(AccessLevel.PRIVATE)
     private LocalDateTime createdDate;
@@ -33,14 +30,13 @@ public class Comment {
     @Setter(AccessLevel.PRIVATE)
     private LocalDateTime modifiedDate;
 
-    @Column(columnDefinition = "TEXT")
-    private String body;
+    @Column(length = 30,unique = true)
+    private String username;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Member author;
+    @Column(length = 100)
+    private String password;
 
-    // fetch -> 언제 post의 정보가 필요한가요? -> LAZY = 필요할때 주세요
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id") // post_id 라는 외래키 컬럼이 생성됨
-    private Post post;
+    @Column(length = 100)
+    private String nickname;
+
 }
