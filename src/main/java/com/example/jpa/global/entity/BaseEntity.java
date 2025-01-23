@@ -6,14 +6,17 @@ import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import lombok.*;
 
+
 @MappedSuperclass
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class BaseEntity {
+
+    @EqualsAndHashCode.Include
     @Id // PR
     @GeneratedValue(strategy = GenerationType.IDENTITY) // AUTO-INCREMENT
-    @Getter
     @Setter(AccessLevel.PRIVATE)
     private Long id;
 
