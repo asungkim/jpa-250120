@@ -57,10 +57,11 @@ public class BaseInitData {
 
         Member user1 = memberService.findByUsername("user1").get();
         Member user2 = memberService.findByUsername("user2").get();
+        Member user3 = memberService.findByUsername("user3").get();
 
         Post p1 = postService.write(user1, "title1", "content1");
-        Post p2 = postService.write(user1, "title2", "content2");
-        Post p3 = postService.write(user2, "title3", "content3");
+        Post p2 = postService.write(user2, "title2", "content2");
+        Post p3 = postService.write(user3, "title3", "content3");
 
 
         Comment c1 = Comment.builder()
