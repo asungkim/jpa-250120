@@ -1,12 +1,11 @@
 package com.example.jpa.domain.member.entity;
 
-import jakarta.persistence.*;
+import com.example.jpa.global.entity.BaseEntity;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -15,21 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 @EntityListeners(AuditingEntityListener.class)
-public class Member {
-
-    @Id // PR
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // AUTO-INCREMENT
-    @Setter(AccessLevel.PRIVATE)
-    private Long id;
-
-    @CreatedDate
-    @Setter(AccessLevel.PRIVATE)
-    private LocalDateTime createdDate;
-
-    @LastModifiedDate
-    @Setter(AccessLevel.PRIVATE)
-    private LocalDateTime modifiedDate;
-
+public class Member extends BaseEntity {
     @Column(length = 30,unique = true)
     private String username;
 
