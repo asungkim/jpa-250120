@@ -25,4 +25,5 @@ public class Comment extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id") // post_id 라는 외래키 컬럼이 생성됨
     private Post post;
+
 }

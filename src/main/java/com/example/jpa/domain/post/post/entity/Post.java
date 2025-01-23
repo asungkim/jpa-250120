@@ -2,6 +2,7 @@ package com.example.jpa.domain.post.post.entity;
 
 import com.example.jpa.domain.member.entity.Member;
 import com.example.jpa.domain.post.comment.entity.Comment;
+import com.example.jpa.domain.tag.entity.Tag;
 import com.example.jpa.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -29,29 +30,27 @@ public class Post extends BaseEntity {
     private Member author;
 
 
-    // mapped -> comments 안에 comment 는 post가 관리할거야
     // cascade -> post가 사라지면 comment 어떻게 할거야?
     // orphanRemoval -> 부모를 삭제하면 자식을 삭제할꺼야?
-    @OneToMany(mappedBy = "post",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "post", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     @Builder.Default
     private List<Comment> comments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
+    @Builder.Default
+    private List<Tag> tags = new ArrayList<>();
+
 
     public void addComment(Comment comment) {
         this.comments.add(comment);
         comment.setPost(this);
     }
 
-    public void removeComment(Comment comment) {
-        this.comments.remove(comment);
-    }
-
-    public void removeAllComments(){
-        comments.stream()
-                .forEach(com->{
-                    comments.remove(com);
-                    com.setPost(null);
-                });
-
-        comments.clear();
+    public void addTag(String name) {
+        Tag tag = Tag.builder()
+                .name(name)
+                .post(this)
+                .build();
+        this.tags.add(tag);
     }
 }

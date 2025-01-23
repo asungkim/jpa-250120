@@ -63,6 +63,10 @@ public class BaseInitData {
         Post p2 = postService.write(user2, "title2", "content2");
         Post p3 = postService.write(user3, "title3", "content3");
 
+        p1.addTag("JPA");
+        p1.addTag("SpringBoot");
+        p1.addTag("개발");
+
 
         Comment c1 = Comment.builder()
                 .author(user1)
