@@ -1,6 +1,6 @@
 package com.example.jpa.domain.member.entity;
 
-import com.example.jpa.global.entity.BaseEntity;
+import com.example.jpa.global.entity.BaseTime;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -14,7 +14,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @NoArgsConstructor
 @Builder
 @EntityListeners(AuditingEntityListener.class)
-public class Member extends BaseEntity {
+public class Member extends BaseTime {
     @Column(length = 30,unique = true)
     private String username;
 
