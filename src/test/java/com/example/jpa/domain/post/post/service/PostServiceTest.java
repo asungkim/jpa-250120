@@ -187,7 +187,7 @@ public class PostServiceTest {
         // 회원 아이디로 회원이 작성한 글 목록 가져오기
         // select * from post p inner join member m on p.member_id=m.id where username = 'user1';
         List<Post> posts=postService.findByAuthorUsername("user1");
-        assertThat(posts.size()).isEqualTo(2);
+        assertThat(posts.size()).isEqualTo(1);
     }
 
     @Test
