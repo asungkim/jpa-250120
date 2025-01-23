@@ -3,13 +3,14 @@ package com.example.jpa.domain.post.post.entity;
 import com.example.jpa.domain.member.entity.Member;
 import com.example.jpa.domain.post.comment.entity.Comment;
 import com.example.jpa.domain.tag.entity.Tag;
-import com.example.jpa.global.entity.BaseEntity;
+import com.example.jpa.global.entity.BaseTime;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Getter
@@ -18,7 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @EntityListeners(AuditingEntityListener.class)
-public class Post extends BaseEntity {
+public class Post extends BaseTime {
 
     @Column(length = 100)
     private String title;
@@ -47,6 +48,15 @@ public class Post extends BaseEntity {
     }
 
     public void addTag(String name) {
+
+        Optional<Tag> oldTag = tags.stream()
+                .filter(tag -> tag.getName().equals(name))
+                .findFirst();
+
+        if (oldTag.isPresent()) {
+            return;
+        }
+
         Tag tag = Tag.builder()
                 .name(name)
                 .post(this)
