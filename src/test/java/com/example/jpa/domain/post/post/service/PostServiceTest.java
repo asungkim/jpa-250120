@@ -189,4 +189,38 @@ public class PostServiceTest {
         List<Post> posts=postService.findByAuthorUsername("user1");
         assertThat(posts.size()).isEqualTo(2);
     }
+
+    @Test
+    @DisplayName("회원 정보로 글 조회2")
+    @Transactional
+    void t14() {
+        // 회원 아이디로 회원이 작성한 글 목록 가져오기
+        // select * from post p inner join member m on p.member_id=m.id where username = 'user1';
+
+        // post에서 member 정보 필요할때
+        // 1. post 조회해서 member_id를 알아온 후 -> member 조회
+        // 2. post랑 member 같이 조회 -> join
+
+        List<Post> posts=postService.findByAuthorUsername("user1");
+        Post post = posts.get(0);
+        System.out.println(post.getId()+", "+post.getTitle());
+
+        System.out.println(post.getAuthor().getUsername());
+    }
+
+    @Test
+    @DisplayName("글 목록에서 회원정보 가져오기 -> N+1 ")
+    @Transactional
+    void t15() {
+
+        // post에서 member 정보 필요할때
+        // 1. post 조회해서 member_id를 알아온 후 -> member 조회
+        // 2. post랑 member 같이 조회 -> join -> JPQL
+        // 3. select * from  post where member_id in (1,2,3,4,5...100) -> batch fetch size
+
+        List<Post> posts = postService.findAll();
+        for (Post post : posts) {
+            System.out.println(post.getId()+", "+post.getTitle()+", "+post.getAuthor().getUsername());
+        }
+    }
 }
